@@ -53,39 +53,8 @@ bool EventWorker::Enqueue(Msg* msg) {
   return true;
 }
 
-int EventWorker::IoRead(int fd) {
-  if (fd != signal_.GetFd() || !signal_.Recv()) {
-    LogError("read from signal failed");
-    return 0;
-  }
-
-  Msg* msg = NULL;
-  size_t num = mq_.TaskNum();
-  if (0 == num) {
-    return 0;
-  }
-  num = num < kMaxMsgNumPer ? num : kMaxMsgNumPer;
-
-  for (size_t i = 0; i < num; ++i) {
-    if (!mq_.Pop(msg) || NULL == msg) {
-      LogError("pop msg err: fd: %d, msg: 0x%x", fd, (long int)msg);
-      continue;
-    }
-
-    LogInfo("fd: %d, msg: 0x%x", fd, (long int)msg);
-
-    DoMsg(msg);
-    DropMsg(msg);
-  }
-
-  return 0;
-}
-
 void EventWorker::DropAll() {
   while (mq_.TaskNum() > 0) {
-
-    LogInfo("repeat ... ");
-
     Msg* msg = NULL;
 
     if (mq_.Pop(msg)) {
@@ -94,6 +63,31 @@ void EventWorker::DropAll() {
       break;
     }
   }
+}
+
+size_t EventWorker::QueueSize() {
+  return mq_.TaskNum();
+}
+
+int EventWorker::IoRead(int fd) {
+  if (fd != signal_.GetFd() || !signal_.Recv()) {
+    LogError("read from signal failed");
+    return 0;
+  }
+
+  Msg* msg = NULL;
+  while (mq_.Pop(msg)) {
+    if (NULL == msg) {
+      // LogError("pop empty msg: fd: %d", fd);
+      return 0;
+    }
+
+    LogInfo("fd: %d, msg: 0x%x", fd, (long int)msg);
+    DoMsg(msg);
+    DropMsg(msg);
+  }
+
+  return 0;
 }
 
 int EventWorker::IoWrite(int fd) {

@@ -33,21 +33,24 @@ class Queue {
   }
 
   bool Pop(T& t) {
+    Guard guard(&mutex_);
+
     if (q_.empty()) {
       return false;
     }
 
-    Guard guard(&mutex_);
     t = q_.front();
     q_.pop_front();
     return true;
   }
 
   size_t TaskNum() {
+    Guard guard(&mutex_);
     return q_.size();
   }
 
   bool Empty() const {
+    Guard guard(&mutex_);
     return q_.empty();
   }
 

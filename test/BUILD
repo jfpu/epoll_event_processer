@@ -1,7 +1,8 @@
 cc_binary (
-  name = 'epoll_event_test',
+  name = 'event_test',
   srcs = [
-    'epoll_event_test.cc',
+    #'epoll_event_test.cc',
+    'event_dispatcher_test.cc',
   ],
 
   incs = [

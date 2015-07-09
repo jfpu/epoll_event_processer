@@ -1,0 +1,21 @@
+﻿add performance cpmpare test code
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	modified:   src/event_worker.cc
+#	modified:   src/event_worker.h
+#	modified:   src/poller.cc
+#	modified:   src/queue.h
+#	modified:   test/BUILD
+#	modified:   test/epoll_event_test.cc
+#
+# Untracked files:
+#	src/event_dispatcher.h
+#	src/event_dispatcher_lockfree.h
+#	src/queue_lockfree.h
+#	test/event_dispatcher_test.cc
+#
+

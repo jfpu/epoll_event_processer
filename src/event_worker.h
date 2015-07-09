@@ -10,6 +10,7 @@
 #include "signal.h"
 #include "worker.h"
 #include "queue.h"
+// #include "queue_lockfree.h"
 
 using std::vector;
 
@@ -25,6 +26,8 @@ class EventWorker : public Event, public QueuedWorker, public Thread {
 
   bool Enqueue(Msg* msg);
   void DropAll();
+
+  size_t QueueSize();
 
  protected:
   int IoRead(int fd);

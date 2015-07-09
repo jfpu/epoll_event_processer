@@ -78,7 +78,7 @@ int Poller::AddRead(int sock, Event* io, bool mod) {
 
   struct epoll_event ev = {0, {0}};
   ev.data.fd = sock;
-  ev.events |= EPOLLIN | EPOLLET;
+  ev.events |= EPOLLIN; // | EPOLLET;
 
   unsigned int op = (!mod) ? EPOLL_CTL_ADD : EPOLL_CTL_MOD;
 
@@ -97,7 +97,7 @@ int Poller::AddWrite(int sock, Event* io, bool mod) {
 
   struct epoll_event ev = {0, {0}};
   ev.data.fd = sock;
-  ev.events |= EPOLLOUT | EPOLLET;
+  ev.events |= EPOLLOUT;  // | EPOLLET;
 
   unsigned int op = (!mod) ? EPOLL_CTL_ADD : EPOLL_CTL_MOD;
 
@@ -123,7 +123,7 @@ int Poller::DelRead(int sock, Event* io) {
 
   struct epoll_event ev = {0, {0}};
   ev.data.fd = sock;
-  ev.events |= EPOLLIN | EPOLLET;
+  ev.events |= EPOLLIN; // | EPOLLET;
 
   LogInfo("pop read sock: 0x%x", sock);
 
@@ -147,7 +147,7 @@ int Poller::DelWrite(int sock, Event* io) {
 
   struct epoll_event ev = {0, {0}};
   ev.data.fd = sock;
-  ev.events |= EPOLLOUT | EPOLLET;
+  ev.events |= EPOLLOUT;  //  | EPOLLET;
 
   LogInfo("pop write sock: 0x%x", sock);
 
